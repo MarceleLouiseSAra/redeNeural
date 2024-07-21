@@ -1,7 +1,6 @@
 #include "Matriz.hpp"
-#include <cstdlib>
-#include <ctime>
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -23,6 +22,7 @@ Matriz::Matriz(int x, int y) {
 }
 
 // Matriz::~Matriz() {
+//   cout << "Entrei no destrutor." << endl;
 //   for (int i = 0; i < rows; i++) {
 //     delete[] m[i];
 //   }
@@ -30,10 +30,13 @@ Matriz::Matriz(int x, int y) {
 // }
 
 void Matriz::randomizaMatriz() {
-  srand(time(0));
+  random_device rd;
+  mt19937 mt(rd());
+  uniform_real_distribution<> dist(-1.0, 1.0);
+
   for (int i = 0; i < rows; i++) {
     for (int j = 0; j < columns; j++) {
-      m[i][j] = rand() % 10;
+      m[i][j] = dist(mt);
     }
   }
 }
@@ -46,14 +49,6 @@ void Matriz::imprimeMatriz() {
     cout << '\n';
   }
 }
-
-// void Matriz::somaMatrizes(Matriz matriz1, Matriz matriz2) {
-//   for (int i = 0; i < rows; i++) {
-//     for (int j = 0; j < columns; j++) {
-//       this->m[i][j] = matriz1.m[i][j] + matriz2.m[i][j];
-//     }
-//   }
-// }
 
 void Matriz::somaMatrizes(Matriz matriz) {
   for (int i = 0; i < rows; i++) {
@@ -82,9 +77,9 @@ void Matriz::multiplicaMatrizes(Matriz matriz1, Matriz matriz2) {
   }
 }
 
-void Matriz::liberaMemoria() {
-  for (int i = 0; i < this->rows; i++) {
-    delete[] m[i];
-  }
-  delete[] m;
-}
+// void Matriz::liberaMemoria() {
+//   for (int i = 0; i < this->rows; i++) {
+//     delete[] m[i];
+//   }
+//   delete[] m;
+// }

@@ -1,8 +1,7 @@
 #include "redeNeural.hpp"
 #include "Matriz.hpp"
-#include <iostream>
 #include <bits/stdc++.h>
-#include <unistd.h>
+#include <iostream>
 
 using namespace std;
 
@@ -21,15 +20,12 @@ redeNeural::redeNeural(int i_nodes, int h_nodes, int o_nodes) {
   this->weigths_ih.randomizaMatriz();
 
   this->weigths_ho = Matriz(this->o_nodes, this->h_nodes);
-  sleep(1);
   this->weigths_ho.randomizaMatriz();
 
   this->bias_ih = Matriz(this->h_nodes, 1);
-  sleep(1);
   this->bias_ih.randomizaMatriz();
 
   this->bias_ho = Matriz(this->o_nodes, 1);
-  sleep(1);
   this->bias_ho.randomizaMatriz();
 }
 
@@ -61,12 +57,14 @@ void redeNeural::Feedfoward() {
   this->camadaOculta.imprimeMatriz();
   cout << '\n';
 
-  cout << "camadaOculta:multiplicaMatrizes():" << endl;
+  cout << "camadaOculta:multiplicaMatrizes(this->weigths_ih, "
+          "this->camadaEntrada):"
+       << endl;
   this->camadaOculta.multiplicaMatrizes(this->weigths_ih, this->camadaEntrada);
   this->camadaOculta.imprimeMatriz();
   cout << '\n';
 
-  cout << "camadaOculta.somaMatrizes():" << endl;
+  cout << "camadaOculta.somaMatrizes(this->bias_ih):" << endl;
   this->camadaOculta.somaMatrizes(this->bias_ih);
   this->camadaOculta.imprimeMatriz();
   cout << '\n';
@@ -91,12 +89,14 @@ void redeNeural::Feedfoward() {
   this->camadaSaida.imprimeMatriz();
   cout << '\n';
 
-  cout << "camadaSaida.multiplicaMatrizes():" << endl;
+  cout
+      << "camadaSaida.multiplicaMatrizes(this->weigths_ho, this->camadaOculta):"
+      << endl;
   this->camadaSaida.multiplicaMatrizes(this->weigths_ho, this->camadaOculta);
   this->camadaSaida.imprimeMatriz();
   cout << '\n';
 
-  cout << "camadaSaida.somaMatrizes():" << endl;
+  cout << "camadaSaida.somaMatrizes(this->bias_ho):" << endl;
   this->camadaSaida.somaMatrizes(this->bias_ho);
   this->camadaSaida.imprimeMatriz();
   cout << '\n';
@@ -111,13 +111,3 @@ void redeNeural::Feedfoward() {
 }
 
 void redeNeural::train() { cout << "tchubirau" << endl; }
-
-// cout << "aux:" << endl;
-// Matriz aux(this->h_nodes, 1);
-// aux.imprimeMatriz();
-// cout << '\n';
-
-// cout << "aux:" << endl;
-// aux.multiplicaMatrizes(this->weigths_ih, this->camadaEntrada);
-// aux.imprimeMatriz();
-// cout << '\n';

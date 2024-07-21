@@ -20,13 +20,11 @@ class Matriz {
 
   void imprimeMatriz();
   
-  //void somaMatrizes(Matriz matriz1, Matriz matriz2);
-
   void somaMatrizes(Matriz matriz);
   
   void multiplicaMatrizes(Matriz matriz1, Matriz matriz2);
 
-  void liberaMemoria();
+  //void liberaMemoria();
   
 };
 
