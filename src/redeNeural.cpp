@@ -5,37 +5,36 @@
 
 using namespace std;
 
-redeNeural::redeNeural(int i_nodes, int h_nodes, int o_nodes) {
-  this->i_nodes = i_nodes;
-  this->h_nodes = h_nodes;
-  this->o_nodes = o_nodes;
-
-  this->learning_rate = 0.1;
-
-  this->camadaEntrada = Matriz(this->i_nodes, 1);
-  this->camadaOculta = Matriz(this->h_nodes, 1);
-  this->camadaSaida = Matriz(this->o_nodes, 1);
-
-  this->weigths_ih = Matriz(this->h_nodes, this->i_nodes);
-  this->weigths_ih.randomizaMatriz();
-
-  this->weigths_ho = Matriz(this->o_nodes, this->h_nodes);
-  this->weigths_ho.randomizaMatriz();
-
-  this->bias_ih = Matriz(this->h_nodes, 1);
+redeNeural::redeNeural(int i_nodes, int h_nodes, int o_nodes)
+  : i_nodes(i_nodes), 
+    h_nodes(h_nodes), 
+    o_nodes(o_nodes),
+    learning_rate(0.1),
+    camadaEntrada(i_nodes, 1),   // <--- Constrói direto no tamanho certo!
+    camadaOculta(h_nodes, 1),
+    camadaSaida(o_nodes, 1),
+    bias_ih(h_nodes, 1),
+    bias_ho(o_nodes, 1),
+    weigths_ih(h_nodes, i_nodes),
+    weigths_ho(o_nodes, h_nodes) {
+  
   this->bias_ih.randomizaMatriz();
-
-  this->bias_ho = Matriz(this->o_nodes, 1);
   this->bias_ho.randomizaMatriz();
+  this->weigths_ih.randomizaMatriz();
+  this->weigths_ho.randomizaMatriz();
 }
 
 void redeNeural::inputsParaEntrada(double *inputs) {
+  // cout << "Entrei no inputsParaEntrada." << endl;
+
   for (int i = 0; i < this->i_nodes; i++) {
     this->camadaEntrada.m[i][0] = inputs[i];
   }
 }
 
-double redeNeural::Sigmoid(double x) { return 1 / (1 + exp(-x)); }
+double redeNeural::Sigmoid(double x) { 
+  return 1 / (1 + exp(-x)); 
+}
 
 void redeNeural::Feedfoward() {
 
@@ -60,7 +59,7 @@ void redeNeural::Feedfoward() {
   cout << "camadaOculta:multiplicaMatrizes(this->weigths_ih, "
           "this->camadaEntrada):"
        << endl;
-  this->camadaOculta.multiplicaMatrizes(this->weigths_ih, this->camadaEntrada);
+  this->camadaOculta = Matriz::multiplicaMatrizes(this->weigths_ih, this->camadaEntrada);
   this->camadaOculta.imprimeMatriz();
   cout << '\n';
 
@@ -92,7 +91,7 @@ void redeNeural::Feedfoward() {
   cout
       << "camadaSaida.multiplicaMatrizes(this->weigths_ho, this->camadaOculta):"
       << endl;
-  this->camadaSaida.multiplicaMatrizes(this->weigths_ho, this->camadaOculta);
+  this->camadaSaida = Matriz::multiplicaMatrizes(this->weigths_ho, this->camadaOculta);
   this->camadaSaida.imprimeMatriz();
   cout << '\n';
 
@@ -110,4 +109,6 @@ void redeNeural::Feedfoward() {
   cout << '\n';
 }
 
-void redeNeural::train() { cout << "tchubirau" << endl; }
+void redeNeural::train() { 
+  cout << "tchubirau" << endl; 
+}

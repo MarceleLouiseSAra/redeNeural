@@ -16,7 +16,8 @@ int main() {
   double *inputs = new double[i_nodes];
 
   for (int i = 0; i < i_nodes; i++) {
-    cin >> inputs[i];
+    // cin >> inputs[i];
+    inputs[i] = 1;
   }
 
   redeNeural.inputsParaEntrada(inputs);

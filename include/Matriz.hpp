@@ -12,19 +12,21 @@ class Matriz {
 
   Matriz();
 
+  Matriz(const Matriz& copy);
+
+  Matriz& operator=(const Matriz& copy);
+
   Matriz(int x, int y);
 
-  //~Matriz();
+  ~Matriz();
 
   void randomizaMatriz();
 
   void imprimeMatriz();
   
-  void somaMatrizes(Matriz matriz);
+  void somaMatrizes(const Matriz& matriz);
   
-  void multiplicaMatrizes(Matriz matriz1, Matriz matriz2);
-
-  //void liberaMemoria();
+  static Matriz multiplicaMatrizes(const Matriz& matriz1, const Matriz& matriz2);
   
 };
 
