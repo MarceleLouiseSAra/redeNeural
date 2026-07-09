@@ -24,6 +24,6 @@ greetings:
 
 build: run greetings
 
-clean: $(OBJ_DIR)/Matriz.o $(OBJ_DIR)/redeNeural.o $(OBJ_DIR)/main.o $(BIN_DIR)/run
+clean: $(OBJ_DIR)/Matriz.o $(OBJ_DIR)/redeNeural.o $(OBJ_DIR)/main.o
 	rm $^
 

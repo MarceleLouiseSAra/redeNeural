@@ -22,93 +22,169 @@ redeNeural::redeNeural(int i_nodes, int h_nodes, int o_nodes)
   this->bias_ho.randomizaMatriz();
   this->weigths_ih.randomizaMatriz();
   this->weigths_ho.randomizaMatriz();
-}
+};
 
-void redeNeural::inputsParaEntrada(double *inputs) {
+void redeNeural::inputsParaEntrada(int *inputs) {
   // cout << "Entrei no inputsParaEntrada." << endl;
 
   for (int i = 0; i < this->i_nodes; i++) {
     this->camadaEntrada.m[i][0] = inputs[i];
   }
-}
+};
 
 double redeNeural::Sigmoid(double x) { 
   return 1 / (1 + exp(-x)); 
-}
+};
+
+double redeNeural::derivadaDaSigmoid(double x) { 
+  return x * (1-x);
+};
 
 void redeNeural::Feedfoward() {
 
-  cout << '\n';
+  // cout << "camadaEntrada:" << endl;
+  // this->camadaEntrada.imprimeMatriz();
+  // cout << "bias_ih:" << endl;
+  // this->bias_ih.imprimeMatriz();
+  // cout << "weigths_ih:" << endl;
+  // this->weigths_ih.imprimeMatriz();
+  // cout << "camadaOculta:" << endl;
+  // this->camadaOculta.imprimeMatriz();
 
-  cout << "camadaEntrada:" << endl;
-  this->camadaEntrada.imprimeMatriz();
-  cout << '\n';
-
-  cout << "bias_ih:" << endl;
-  this->bias_ih.imprimeMatriz();
-  cout << '\n';
-
-  cout << "weigths_ih:" << endl;
-  this->weigths_ih.imprimeMatriz();
-  cout << '\n';
-
-  cout << "camadaOculta:" << endl;
-  this->camadaOculta.imprimeMatriz();
-  cout << '\n';
-
-  cout << "camadaOculta:multiplicaMatrizes(this->weigths_ih, "
-          "this->camadaEntrada):"
-       << endl;
   this->camadaOculta = Matriz::multiplicaMatrizes(this->weigths_ih, this->camadaEntrada);
-  this->camadaOculta.imprimeMatriz();
-  cout << '\n';
+  // cout << "camadaOculta:" << endl;
+  // this->camadaOculta.imprimeMatriz();
 
-  cout << "camadaOculta.somaMatrizes(this->bias_ih):" << endl;
   this->camadaOculta.somaMatrizes(this->bias_ih);
-  this->camadaOculta.imprimeMatriz();
-  cout << '\n';
+  // cout << "camadaOculta:" << endl;
+  // this->camadaOculta.imprimeMatriz();
 
   for (int i = 0; i < this->h_nodes; i++) {
     this->camadaOculta.m[i][0] = Sigmoid(this->camadaOculta.m[i][0]);
   }
 
-  cout << "Sigmoid(this->camadaOculta):" << endl;
-  this->camadaOculta.imprimeMatriz();
-  cout << '\n';
+  // cout << "camadaOculta:" << endl;
+  // this->camadaOculta.imprimeMatriz();
+  // cout << "bias_ho:" << endl;
+  // this->bias_ho.imprimeMatriz();
+  // cout << "weigths_ho:" << endl;
+  // this->weigths_ho.imprimeMatriz();
+  // cout << "camadaSaida:" << endl;
+  // this->camadaSaida.imprimeMatriz();
 
-  cout << "bias_ho:" << endl;
-  this->bias_ho.imprimeMatriz();
-  cout << '\n';
-
-  cout << "weigths_ho:" << endl;
-  this->weigths_ho.imprimeMatriz();
-  cout << '\n';
-
-  cout << "camadaSaida:" << endl;
-  this->camadaSaida.imprimeMatriz();
-  cout << '\n';
-
-  cout
-      << "camadaSaida.multiplicaMatrizes(this->weigths_ho, this->camadaOculta):"
-      << endl;
   this->camadaSaida = Matriz::multiplicaMatrizes(this->weigths_ho, this->camadaOculta);
-  this->camadaSaida.imprimeMatriz();
-  cout << '\n';
-
-  cout << "camadaSaida.somaMatrizes(this->bias_ho):" << endl;
+  // cout << "camadaSaida: " << endl;
+  // this->camadaSaida.imprimeMatriz();
+  
   this->camadaSaida.somaMatrizes(this->bias_ho);
-  this->camadaSaida.imprimeMatriz();
-  cout << '\n';
+  // cout << "camadaSaida: " << endl;
+  // this->camadaSaida.imprimeMatriz();
 
   for (int i = 0; i < this->o_nodes; i++) {
     this->camadaSaida.m[i][0] = Sigmoid(this->camadaSaida.m[i][0]);
   }
 
-  cout << "Sigmoide(this->camadaSaida):" << endl;
-  this->camadaSaida.imprimeMatriz();
-  cout << '\n';
-}
+  // cout << "camadaSaida: " << endl;
+  // this->camadaSaida.imprimeMatriz();
+};
 
-void redeNeural::train() { 
-  cout << "tchubirau" << endl; 
-}
+void redeNeural::Backpropagation(const Matriz& respostaCerta) {
+
+  // Saída -> Oculta:
+  // cout << "this->camadaSaida.imprimeMatriz(): " << endl;
+  // this->camadaSaida.imprimeMatriz();
+
+  Matriz erroDaSaida = Matriz::subtraiMatrizes(respostaCerta, this->camadaSaida);
+  // cout << "erroDaSaida.imprimeMatriz(): " << endl; 
+  // erroDaSaida.imprimeMatriz();
+
+  Matriz derivadaDaSaida = this->camadaSaida;
+
+  for (int i = 0; i < this->o_nodes; i++) {
+    derivadaDaSaida.m[i][0] = derivadaDaSigmoid(derivadaDaSaida.m[i][0]);
+  }
+
+  // cout << "derivadaDaSaida: " << endl;
+  // derivadaDaSaida.imprimeMatriz();
+
+  Matriz gradiente_da_oculta = Matriz::hadamard(erroDaSaida, derivadaDaSaida);
+  // cout << "gradiente da camada oculta: " << endl;
+  // gradiente_da_oculta.imprimeMatriz();
+
+  gradiente_da_oculta.multiplicaMatrizPorEscalar(learning_rate);
+  // cout << "gradiente da camada oculta multiplicada pelo learning rate: " << endl;
+  // gradiente_da_oculta.imprimeMatriz();
+
+  this->bias_ho.somaMatrizes(gradiente_da_oculta);
+  // cout << "bias_ih: " << endl;
+  // bias_ih.imprimeMatriz();
+
+  Matriz camadaOcultaTransposta = Matriz::transpoeMatriz(this->camadaOculta);
+
+  Matriz weigths_ho_deltas = Matriz::multiplicaMatrizes(gradiente_da_oculta, camadaOcultaTransposta);
+  // cout << "Correções dos pesos entre as camadas oculta e de saída: " << endl;
+  // weigths_ho_deltas.imprimeMatriz();
+
+  // cout << "weigths_ho: " << endl;
+  // this->weigths_ho.imprimeMatriz();
+
+  this->weigths_ho.somaMatrizes(weigths_ho_deltas);
+
+  // cout << "weigths_ho corrigidos: " << endl;
+  // this->weigths_ho.imprimeMatriz();
+
+  //Oculta -> Entrada:
+  
+  Matriz weigths_ho_transposta = Matriz::transpoeMatriz(this->weigths_ho);
+  Matriz erroDaOculta = Matriz::multiplicaMatrizes(weigths_ho_transposta, erroDaSaida);
+  // cout << "erroDaOculta: " << endl;
+  // erroDaOculta.imprimeMatriz();
+
+  Matriz derivadaDaOculta = this->camadaOculta;
+
+  for (int i = 0; i < this->o_nodes; i++) {
+    derivadaDaOculta.m[i][0] = derivadaDaSigmoid(derivadaDaOculta.m[i][0]);
+  }
+
+  // cout << "derivadaDaOculta: " << endl;
+  // derivadaDaOculta.imprimeMatriz();
+
+  Matriz gradiente_da_entrada = Matriz::hadamard(erroDaOculta, derivadaDaOculta);
+
+  // cout << "gradiente da camada de entrada: " << endl;
+  // gradiente_da_entrada.imprimeMatriz();
+
+  gradiente_da_entrada.multiplicaMatrizPorEscalar(learning_rate);
+  // cout << "gradiente da camada de entrada multiplicada pelo learning rate: " << endl;
+  // gradiente_da_entrada.imprimeMatriz();
+
+  this->bias_ih.somaMatrizes(gradiente_da_entrada);
+  // cout << "bias_ih: " << endl;
+  // bias_ih.imprimeMatriz();
+
+  Matriz camadaEntradaTransposta = Matriz::transpoeMatriz(this->camadaEntrada);
+
+  Matriz weigths_ih_deltas = Matriz::multiplicaMatrizes(gradiente_da_entrada, camadaEntradaTransposta);
+
+  // cout << "Correções dos pesos entre as camadas de entrada e oculta: " << endl;
+  // weigths_ih_deltas.imprimeMatriz();
+
+  // cout << "weigths_ih: " << endl;
+  // this->weigths_ih.imprimeMatriz();
+
+  this->weigths_ih.somaMatrizes(weigths_ih_deltas);
+
+  // cout << "weigths_ih corrigidos: " << endl;
+  // this->weigths_ih.imprimeMatriz();
+
+};
+
+void redeNeural::train(const Matriz& respostaCerta) { 
+  this->Feedfoward();
+
+  this->Backpropagation(respostaCerta);
+};
+
+void redeNeural::predict() {
+  this->Feedfoward();
+};

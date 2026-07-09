@@ -47,7 +47,7 @@ Matriz::Matriz(const Matriz& copy) {
 }
 
 Matriz& Matriz::operator=(const Matriz& copy) {
-  if (this != &copy) {
+  if (this == &copy) {
     return *this;
   }
 
@@ -118,14 +118,20 @@ void Matriz::imprimeMatriz() {
 }
 
 void Matriz::somaMatrizes(const Matriz& matriz) {
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < columns; j++) {
-      this->m[i][j] += matriz.m[i][j];
+  if (this->rows == matriz.rows || this->columns == matriz.columns) {
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < columns; j++) {
+        this->m[i][j] += matriz.m[i][j];
+      }
     }
+  } else {
+    cout << "É necessário que os números de linhas e colunas das matrizes 1 e 2 sejam iguais."
+         << endl;
   }
 }
 
 Matriz Matriz::multiplicaMatrizes(const Matriz& matriz1, const Matriz& matriz2) {
+
   Matriz auxMatrix(matriz1.rows, matriz2.columns);
 
   if (matriz1.columns == matriz2.rows) {
@@ -151,3 +157,57 @@ Matriz Matriz::multiplicaMatrizes(const Matriz& matriz1, const Matriz& matriz2) 
 
   return auxMatrix;
 }
+
+Matriz Matriz::hadamard(const Matriz& matriz1, const Matriz& matriz2) {
+  Matriz auxMatrix(matriz1.rows, matriz1.columns);
+
+  if (matriz1.rows == matriz2.rows || matriz1.columns == matriz2.columns) {
+    for (int i = 0; i < matriz1.rows; i++) {
+      for (int j = 0; j < matriz1.columns; j++) {
+        auxMatrix.m[i][j] = matriz1.m[i][j] * matriz2.m[i][j];
+      }
+    }
+  } else {
+    cout << "É necessário que os números de linhas e colunas das matrizes 1 e 2 sejam iguais."
+         << endl;
+  }
+
+  return auxMatrix;
+};
+
+void Matriz::multiplicaMatrizPorEscalar(double escalar) {
+  for (int i = 0; i < this->rows; i++) {
+    for (int j = 0; j < this->columns; j++) {
+      this->m[i][j] *= escalar;
+    }
+  }
+};
+
+Matriz Matriz::transpoeMatriz(const Matriz& matriz) {
+  Matriz auxMatrix(matriz.columns, matriz.rows);
+
+  for (int i = 0; i < matriz.rows; i++) {
+    for (int j = 0; j < matriz.columns; j++) {
+      auxMatrix.m[j][i] = matriz.m[i][j];
+    }
+  }
+
+  return auxMatrix;
+};
+
+Matriz Matriz::subtraiMatrizes(const Matriz& matriz1, const Matriz& matriz2) {
+  Matriz auxMatrix(matriz1.rows, matriz1.columns);
+  
+  if (matriz1.rows == matriz2.rows || matriz1.columns == matriz2.columns) {
+    for (int i = 0; i < matriz1.rows; i++) {
+      for (int j = 0; j < matriz1.columns; j++) {
+        auxMatrix.m[i][j] = matriz1.m[i][j] - matriz2.m[i][j];
+      }
+    }
+  } else {
+    cout << "É necessário que os números de linhas e colunas das matrizes 1 e 2 sejam iguais."
+         << endl;
+  }
+
+  return auxMatrix;
+};

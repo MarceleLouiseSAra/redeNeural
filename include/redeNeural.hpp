@@ -25,13 +25,19 @@ class redeNeural {
 
   redeNeural(int i_nodes, int h_nodes, int o_nodes);
 
-  void inputsParaEntrada(double *inputs);
+  void inputsParaEntrada(int *inputs);
 
   double Sigmoid(double x);
 
+  double derivadaDaSigmoid(double x);
+
   void Feedfoward();
 
-  void train();
+  void Backpropagation(const Matriz& respostaCerta);
+
+  void train(const Matriz& respostaCerta);
+
+  void predict();
 
 };
 

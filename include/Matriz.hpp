@@ -27,6 +27,14 @@ class Matriz {
   void somaMatrizes(const Matriz& matriz);
   
   static Matriz multiplicaMatrizes(const Matriz& matriz1, const Matriz& matriz2);
+
+  static Matriz hadamard(const Matriz& matriz1, const Matriz& matriz2);
+
+  void multiplicaMatrizPorEscalar(double escalar);
+
+  static Matriz transpoeMatriz(const Matriz& matriz);
+
+  static Matriz subtraiMatrizes(const Matriz& matriz1, const Matriz& matriz2);
   
 };
 
