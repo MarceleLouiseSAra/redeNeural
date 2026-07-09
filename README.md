@@ -1,6 +1,6 @@
 # Projeto pessoal de implementação e treinamento de uma rede neural
 
-O presente projeto implementa uma rede neural artificial, cuja camada oculta pode variar de tamanho, pode e a treina para resolver o problema da porta lógica XOR.
+O presente projeto implementa uma rede neural artificial, cuja camada oculta pode variar de tamanho, e a treina para resolver o problema da porta lógica XOR.
 
 Em particular, chama-se atenção para o uso de um arquivo *Makefile* para otimizar o processo de compilação; a sua utilização garante que arquivos que não sofreram alterações não sejam recompilados desnecessariamente.
 
